@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 # import the LogisticRegression
 from sklearn.linear_model import LogisticRegression
+import var
 
 
 def loadtrain(file_name, maxline=10):
@@ -48,7 +49,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
     return data, label, validdata, validlabel
 
 # 载入训练集
-labelmat, datamat = loadtrain('/Users/yuxiao/国科大/课件/网络数据挖掘/大作业/垃圾短信分类/train.txt', maxline=10000)
+labelmat, datamat = loadtrain(var.train_data_path, maxline=10000)
 
 # 载入测试集
 # testdataMat = loadtest('test.txt', maxline=100)
