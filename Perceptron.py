@@ -4,19 +4,30 @@ __author__ = 'Lingfeng Lin'
 # 读取数据
 from sklearn import datasets
 import numpy as np
-iris = datasets.load_iris()
-X = iris.data[:,[2,3]]
-y = iris.target
+import jieba
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+import Svm
 
-fr = open('G:/codes/git/train.txt')
-f = open('g:/codes')
-for line in fr.readline():
+#iris = datasets.load_iris()
+#X = iris.data[:,[2,3]]
+#y = iris.target
 
+fr = ('G:/codes/git/New-MessageClassification/train.txt')
+
+labelmat, datamat = Svm.loadtrain(fr, 1000)
+
+# 使用jieba库进行中文分词
+datamat = Svm.cutdata(datamat)
+# testdataMat = cutdata(testdataMat)
+
+# 将字符串标签转换为整型
+labelmat = [-1 if int(x) == 0 else 1 for x in labelmat]
 
 
 # 训练数据和测试数据分为7:3
 from sklearn.cross_validation import train_test_split
-x_train,x_test,y_train,y_test =train_test_split(X,y,test_size=0.3,random_state=0)
+x_train,x_test,y_train,y_test =train_test_split(datamat,labelmat,test_size=0.3,random_state=0)
 
 # 标准化数据
 from sklearn.preprocessing import StandardScaler
@@ -29,7 +40,7 @@ x_test_std = sc.transform(x_test)
 from sklearn.linear_model import Perceptron
 ppn = Perceptron(n_iter=40,eta0=0.01,random_state=0)
 ppn.fit(x_train_std,y_train)
-
+#ppn.fit(X_train_tfidf, labelmat)
 
 y_pred = ppn.predict(x_test_std)
 print('错误分类数: %d' % (y_test != y_pred).sum())
