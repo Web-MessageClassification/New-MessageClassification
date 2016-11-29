@@ -1,0 +1,22 @@
+大作业截止日期12月6日！！！！！！！！！
+12月1日周四晚上完成以下任务
+
+1 github 的使用， git push,pull,commit,fetch 操作
+2 开发语言 python 2.7, 开发工具pycharm，自己安装并配置好git
+3 参考开发包 sklearn
+http://scikit-learn.org/stable/index.html
+重点中重点：学会使用 http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html working with Text data
+
+4 查看网上资料，python动手实现如下分类的算法，分工如下
+Perceptron 林
+SVM 陈 http://www.cnblogs.com/wsine/p/5180615.html
+Logistic Regression 李
+贝叶斯分类 熊
+Boosting
+
+5 jieba 分词学习
+
+6 数据分割和测试研究分工如下：
+随机分割，  林
+5-fold cross validation  陈
+精度：Precision/Recall/F1 李
