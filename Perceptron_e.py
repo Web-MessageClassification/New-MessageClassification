@@ -6,7 +6,7 @@ import jieba
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
-
+import var
 
 def loadtrain(file_name, maxline=10):
     dataMat = []
@@ -47,7 +47,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
     return data, label, validdata, validlabel
 
 # 载入训练集
-labelmat, datamat = loadtrain('train.txt', maxline=100)
+labelmat, datamat = loadtrain(var.train_data_path, maxline=100)
 
 # 载入测试集
 # testdataMat = loadtest('test.txt', maxline=100)
@@ -75,7 +75,6 @@ for it in range(corssvalid_k):
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 
     # 实例一个SVM分类器
-    #
     #clf = SGDClassifier(loss='hinge', alpha=1e-3, n_iter=5, random_state=42).fit(X_train_tfidf, labelmat)
 
     # 实例一个perceptron分类器
