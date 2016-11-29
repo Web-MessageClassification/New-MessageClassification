@@ -9,6 +9,7 @@ X = iris.data[:,[2,3]]
 y = iris.target
 
 fr = open('G:/codes/git/train.txt')
+f = open('g:/codes')
 for line in fr.readline():
 
 
