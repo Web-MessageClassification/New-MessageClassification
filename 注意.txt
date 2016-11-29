@@ -1,5 +1,14 @@
-可以新建一个var.py 文件，里面存放项目用到的私有文件路径，如在var.py 中添加一行：
-train_data_path = '/Users/yuxiao/国科大/课件/网络数据挖掘/大作业/垃圾短信分类/train.txt'
-路径修改为各自电脑相对应的路径，然后在分类器代码中训练数据的路径修改为 var.train_data_path,并在最前面import var
-！！！！！！并且在.gitgnore 中添加一行 var.py,以表示var.py,文件不参与远端仓库的push操作
-.gitgnore 为记录不参与push 操作的文件
+文件路径和分类器代码分离步骤：
+
+   1可以新建一个var.py 文件，里面存放项目用到的私有文件路径，如在var.py 中添加一行：
+    train_data_path = '/Users/yuxiao/国科大/课件/网络数据挖掘/大作业/垃圾短信分类/train.txt'
+    路径修改为各自电脑相对应的路径，然后在分类器代码中训练数据的路径修改为 var.train_data_path,并在最前面import var
+    ！！！！！！并且在.gitgnore 中添加一行 var.py,以表示var.py,文件不参与远端仓库的push操作
+    .gitgnore 为记录不参与push 操作的文件
+
+    2 在项目路径下打开命令行，输入
+    git rm -r --cached .
+    git add .
+    git commit -m 'update .gitignore'
+
+
