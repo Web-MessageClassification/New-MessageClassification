@@ -93,3 +93,4 @@ for it in range(corssvalid_k):
     corssvalid_q[it] = np.mean(predicted == validlabelmat)
 
 print(np.mean(corssvalid_q))
+this is a new version test
