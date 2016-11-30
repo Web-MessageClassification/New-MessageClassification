@@ -51,7 +51,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
 # 载入训练集
 Data_path = os.path.dirname(os.path.dirname(__file__))
 train_path = os.path.join(Data_path,'Data file','Labeled data.txt')
-labelmat, datamat = loadtrain(var.train_data_path, maxline=10000)
+labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
 
 # 载入测试集
 # testdataMat = loadtest('test.txt', maxline=100)
