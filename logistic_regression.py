@@ -107,4 +107,4 @@ for it in range(corssvalid_k):
 
 print 'Precision Rate: ',np.mean(corssvalid_q)
 print 'Recall Rate:    ',np.mean(corssvalid_recall)
-print 'F1-Measure:     ',np.mean(F1)# this is a new version test
+print 'F1-Measure:     ',np.mean(F1)
