@@ -64,6 +64,8 @@ labelmat = [-1 if int(x) == 0 else 1 for x in labelmat]
 # 交叉验证的步数
 corssvalid_k = 5
 corssvalid_q = [0] * corssvalid_k
+corssvalid_recall = [1] * corssvalid_k
+F1 = [1] * corssvalid_k
 
 for it in range(corssvalid_k):
     # 生成交叉验证的训练集和测试集
@@ -97,6 +99,12 @@ for it in range(corssvalid_k):
 
     # 计算正确率
     corssvalid_q[it] = np.mean(predicted == validlabelmat)
+    # 计算正确率, 召回率和F1-Measure
+    corssvalid_q[it] = np.mean(predicted == validlabelmat)
+    corssvalid_recall[it] = 1.0 * len(validlabelmat) / len(labelmat) * np.mean(predicted == validlabelmat)
+    F1[it] = 2.0 * corssvalid_q[it] * corssvalid_recall[it] / (corssvalid_q[it] + corssvalid_recall[it])
 
-print('使用Logistics Regression方法的正确率'+str(np.mean(corssvalid_q)))
-# this is a new version test
+
+print 'Precision Rate: ',np.mean(corssvalid_q)
+print 'Recall Rate:    ',np.mean(corssvalid_recall)
+print 'F1-Measure:     ',np.mean(F1)# this is a new version test
