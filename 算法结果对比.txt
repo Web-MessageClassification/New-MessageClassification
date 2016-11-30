@@ -1,0 +1,25 @@
+800000行原始数据测试后结果如下：
+Naive Bayes
+oading model cost 0.402 seconds.
+Prefix dict has been built succesfully.
+Precision Rate:  0.983959887695
+Recall Rate:     0.245989971924
+F1-Measure:      0.393583955078
+
+Logistic_regression
+Loading model cost 0.402 seconds.
+Precision Rate:  0.988951748047
+Recall Rate:     0.247237937012
+F1-Measure:      0.395580699219
+
+Perception
+Precision Rate:   0.988402666016
+Recall Rate:      0.247100666504
+F1-Measure:       0.395361066406
+
+
+SVM
+Loading model cost 0.402 seconds.
+Precision Rate:  0.926815834961
+Recall Rate:     0.23170395874
+F1-Measure:      0.370726333984
