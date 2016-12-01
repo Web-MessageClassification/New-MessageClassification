@@ -4,7 +4,6 @@
 
 import jieba
 import numpy as np
-import os
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
@@ -49,8 +48,6 @@ def makecrossvaliddata(datamat, labelmat, it, k):
     return data, label, validdata, validlabel
 
 # 载入训练集
-Data_path = os.path.dirname(os.path.dirname(__file__))
-train_path = os.path.join(Data_path,'Data file','Labeled data.txt')
 labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
 
 # 载入测试集
