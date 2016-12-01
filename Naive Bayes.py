@@ -97,6 +97,6 @@ for it in range(corssvalid_k):
     F1[it] = 2.0 * corssvalid_q[it] * corssvalid_recall[it] / (corssvalid_q[it] + corssvalid_recall[it])
 
 
-print 'Precision Rate: ',np.mean(corssvalid_q)
+print 'Accuracy Rate: ',np.mean(corssvalid_q)
 print 'Recall Rate:    ',np.mean(corssvalid_recall)
 print 'F1-Measure:     ',np.mean(F1)
