@@ -84,7 +84,7 @@ for it in range(corssvalid_k):
     # clf = SGDClassifier(loss='hinge', alpha=1e-3, n_iter=5, random_state=42).fit(X_train_tfidf, labelmat)
 
     # 实现Logistic Regression 分类器
-    clf = LogisticRegression()
+    clf = LogisticRegression(penalty='l1')
     clf.fit(X_train_tfidf, labelmat)
 
     # 计算新数据tfidf
@@ -97,8 +97,6 @@ for it in range(corssvalid_k):
     # for i in range(len(predicted)):
     #     print('%d\t%s' % (predicted[i], validdatamat[i]))
 
-    # 计算正确率
-    corssvalid_q[it] = np.mean(predicted == validlabelmat)
     # 计算正确率, 召回率和F1-Measure
     corssvalid_q[it] = np.mean(predicted == validlabelmat)
     corssvalid_recall[it] = 1.0 * len(validlabelmat) / len(labelmat) * np.mean(predicted == validlabelmat)
