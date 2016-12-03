@@ -1,4 +1,4 @@
-800000行原始数据测试后结果如下：
+800000行原始数据交叉验证测试后结果如下：
 
 Naive Bayes
 Precision Rate:  0.983959887695
@@ -6,9 +6,10 @@ Recall Rate:     0.245989971924
 F1-Measure:      0.393583955078
 
 Logistic_regression
-Precision Rate:  0.988951748047
-Recall Rate:     0.247237937012
-F1-Measure:      0.395580699219
+Precision Rate:  0.96983450977
+Recall Rate:     0.918404131832
+F1-Measure:      0.943406944309
+所用时间：227.677124 秒
 
 Perception
 Precision Rate:   0.988402666016
@@ -19,3 +20,10 @@ SVM
 Precision Rate:  0.926815834961
 Recall Rate:     0.23170395874
 F1-Measure:      0.370726333984
+
+网格调参的结果：
+Perceptron:
+Precision Rate:  0.898018758252
+Recall Rate:     0.926957359998
+F1-Measure:      0.912241113615
+SpamMassage Rate: 0.102474
