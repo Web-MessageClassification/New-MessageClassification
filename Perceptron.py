@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.linear_model import SGDClassifier
 import var
+import time
 
 def loadtrain(file_name, maxline=10):
     dataMat = []
@@ -50,6 +51,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
 trainData_count = len(open(var.train_data_path,'rU').readlines())
 testData_count = len(open(var.test_data_path,'rU').readlines())
 
+time_1 = time.time()
 # 载入训练集
 labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
 
@@ -69,6 +71,13 @@ corssvalid_recall = [1] * corssvalid_k
 F1 = [1] * corssvalid_k
 spamMassage_rate = [1] * corssvalid_k
 
+corssvalid_time_train = [0] * corssvalid_k
+corssvalid_time_test = [0] * corssvalid_k
+
+
+time_2 = time.time()
+print 'Read data cost ', time_2 - time_1, ' second', '\n'
+
 for it in range(corssvalid_k):
     # 生成交叉验证的训练集和测试集
     datamat, labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
@@ -80,13 +89,17 @@ for it in range(corssvalid_k):
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+    print 'The column of tfidf matrix:', X_train_tfidf.shape
 
+    time_3 = time.time()
     # 实例一个perceptron分类器
     # TODO 自己实现
     from sklearn.linear_model import Perceptron
-    clf = Perceptron(n_iter=40, eta0=0.01, random_state=0)
+    clf = Perceptron(penalty='l2', n_iter=5, eta0=1, random_state=0)
     clf.fit(X_train_tfidf, labelmat)
-
+    time_4 = time.time()
+    corssvalid_time_train[it] = time_4 - time_3
+    print 'Train cost ', time_4 - time_3, ' second', '\n'
 
     # 计算新数据tfidf
     X_new_counts = count_vect.transform(validdatamat)
@@ -99,8 +112,12 @@ for it in range(corssvalid_k):
     X_test_counts = count_vect.transform(testdataMat)
     X_test_tfidf = tfidf_transformer.transform(X_test_counts)
 
+    time_5 = time.time()
     #判别测试数据的标签
     predicted_test = clf.predict(X_test_tfidf)
+    time_6 = time.time()
+    corssvalid_time_test[it] = time_4 - time_3
+    print 'Test cost ', time_6 - time_5, ' second', '\n'
 
     #计算test数据的垃圾短信率
     spamMassage_rate[it] = np.mean(predicted_test == 1)
@@ -109,18 +126,38 @@ for it in range(corssvalid_k):
     #   print('%d\t%s' % (predicted[i], validdatamat[i]))
 
     # 计算正确率, 召回率和F1-Measure
-    corssvalid_q[it] = np.mean(predicted == validlabelmat)
-    corssvalid_recall[it] = 1.0*len(validlabelmat)/len(labelmat)*np.mean(predicted == validlabelmat)
-    F1[it] = 2.0*corssvalid_q[it]*corssvalid_recall[it]/(corssvalid_q[it]+corssvalid_recall[it])
+    pre_accurate = 0.0
+    recall_accurate = 0.0
+    sum_acc = 0.0
+    sum_re = 0.0
+    for i in range(len(predicted)):
+        tmp_predit = int(predicted[i])
+        tmp_valid = int(validlabelmat[i])
+        # print('%d\t%s' % (predicted[i], validdatamat[i]))
+        if tmp_predit == 1 and tmp_predit == tmp_valid:
+            pre_accurate += 1
+        if tmp_valid == 1 and tmp_valid == tmp_predit:
+            recall_accurate += 1
 
-print 'trainData count: ', trainData_count
-print 'testData count:  ', testData_count
-print 'Precision Rate:  ', np.mean(corssvalid_q)
-print 'Recall Rate:     ', np.mean(corssvalid_recall)
-print 'F1-Measure:      ', np.mean(F1)
+        if tmp_predit == 1:
+            sum_acc += 1
+        if tmp_valid == 1:
+            sum_re += 1
+    # 计算正确率
+    corssvalid_q[it] = pre_accurate / sum_acc
+    # 计算召回率
+    corssvalid_recall[it] = recall_accurate / sum_re
+    # 计算F1-Measure
+    F1[it] = 2.0 * corssvalid_q[it] * corssvalid_recall[it] / (corssvalid_q[it] + corssvalid_recall[it])
+
+print 'Precision Rate: ', np.mean(corssvalid_q)
+print 'Recall Rate:    ', np.mean(corssvalid_recall)
+print 'F1-Measure:     ', np.mean(F1)
 print 'SpamMassage Rate:', np.mean(spamMassage_rate)
+print 'Average time of train:', np.mean(corssvalid_time_train)
+print 'Average time of test:', np.mean(corssvalid_time_test)
 
-
+#超参数：n_iter=40, eta0=0.01, random_state=0.
 #trainData count:  800000
 #trainData count:  800000
 #testData count:   200000
@@ -128,3 +165,17 @@ print 'SpamMassage Rate:', np.mean(spamMassage_rate)
 #Recall Rate:      0.247100666504
 #F1-Measure:       0.395361066406
 #SpamMassage Rate: 0.099029
+
+#超参数： penalty='None', n_iter=5, eta0=1, random_state=0.
+#trainData count:  800000
+#testData count:   200000
+#Precision Rate:   0.989921591797
+#Recall Rate:      0.247480397949
+#F1-Measure:       0.395968636719
+#SpamMassage Rate: 0.098979
+
+#超参数：penalty='l1', n_iter=5, eta0=1, random_state=0
+#Precision Rate:   0.950196899414
+#Recall Rate:      0.237549224854
+#F1-Measure:       0.380078759766
+#SpamMassage Rate: 0.078912
