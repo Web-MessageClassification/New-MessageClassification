@@ -1,13 +1,13 @@
 # coding=utf-8
 # Create by Lingfeng Lin
 
-import numpy as np
-import jieba
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.linear_model import SGDClassifier
-import var
+#from time import clock
+import numpy as np
+import jieba
 import time
+import var
 
 def loadtrain(file_name, maxline=10):
     dataMat = []
@@ -47,6 +47,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
             label.append(labelmat[i])
     return data, label, validdata, validlabel
 
+#start = clock()
 #统计数据的行数
 trainData_count = len(open(var.train_data_path,'rU').readlines())
 testData_count = len(open(var.test_data_path,'rU').readlines())
@@ -80,11 +81,11 @@ print 'Read data cost ', time_2 - time_1, ' second', '\n'
 
 for it in range(corssvalid_k):
     # 生成交叉验证的训练集和测试集
-    datamat, labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
+    cut_datamat, cut_labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
 
     # 计算每个词的出现频率tf
     count_vect = CountVectorizer()
-    X_train_counts = count_vect.fit_transform(datamat)
+    X_train_counts = count_vect.fit_transform(cut_datamat)
 
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
@@ -96,7 +97,7 @@ for it in range(corssvalid_k):
     # TODO 自己实现
     from sklearn.linear_model import Perceptron
     clf = Perceptron(penalty='l2', n_iter=5, eta0=0.05, random_state=0)
-    clf.fit(X_train_tfidf, labelmat)
+    clf.fit(X_train_tfidf, cut_labelmat)
     time_4 = time.time()
     corssvalid_time_train[it] = time_4 - time_3
     print 'Train cost ', time_4 - time_3, ' second', '\n'
@@ -156,6 +157,8 @@ print 'F1-Measure:     ', np.mean(F1)
 print 'SpamMassage Rate:', np.mean(spamMassage_rate)
 print 'Average time of train:', np.mean(corssvalid_time_train)
 print 'Average time of test:', np.mean(corssvalid_time_test)
+#finish = clock()
+#print '所用时间：'+str(finish - start)
 
 #超参数：n_iter=40, eta0=0.01, random_state=0.
 #trainData count:  800000
