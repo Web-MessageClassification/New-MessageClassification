@@ -47,7 +47,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
     return data, label, validdata, validlabel
 
 # 载入训练集
-labelmat, datamat = loadtrain(var.train_data_path, maxline=10000)
+labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
 
 # 使用jieba库进行中文分词
 datamat = cutdata(datamat)
@@ -66,8 +66,9 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 # 设置网格参数（可自行增加）
 
 Grid_parameters = [
-{'penalty': ['l2'], 'n_iter': [5, 10, 20], 'eta0': [0.5, 0.1, 0.05]},
-{'penalty': ['l1'], 'n_iter': [5, 10, 20], 'eta0': [0.5, 0.1, 0.05]}
+{'penalty': ['l2'], 'n_iter': [5, 10, 20, 40], 'eta0': [1, 0.5, 0.1, 0.05]},
+{'penalty': ['l1'], 'n_iter': [5, 10, 20, 40], 'eta0': [1, 0.5, 0.1, 0.05]},
+{'penalty': ['elasticnet'], 'n_iter': [5, 10, 20, 40], 'eta0': [1, 0.5, 0.1, 0.05]}
 ]
 
 # 实例一个perceptron分类器
@@ -77,3 +78,5 @@ clf.fit(X_train_tfidf, labelmat)
 
 # 输出最优参数
 print(clf.best_params_)
+
+#最优参数为{'penalty': 'l2', 'n_iter': 5, 'eta0': 0.05}
