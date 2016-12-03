@@ -20,3 +20,11 @@ Boosting
 随机分割，  林
 5-fold cross validation  陈
 精度：Precision/Recall/F1 李
+
+文档撰写分工
+2.2.2 算法软件包 描述  陈君
+摘要  林
+4.1 评价标准 熊
+4.4 SVM 陈君
+4.5 感知器 林
+4.6 贝叶斯 熊

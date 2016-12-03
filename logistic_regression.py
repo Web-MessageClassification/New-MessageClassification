@@ -52,7 +52,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
 
 start = clock()
 # 载入训练集
-labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
+labelmat, datamat = loadtrain(var.train_data_path, maxline=10000)
 
 # 载入测试集
 # testdataMat = loadtest('test.txt', maxline=100)
@@ -98,6 +98,7 @@ for it in range(corssvalid_k):
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+    print X_train_tfidf.shape
 
 
     # 实现Logistic Regression 分类器

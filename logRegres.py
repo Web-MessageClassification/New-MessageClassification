@@ -40,7 +40,7 @@ def cutdata(dataMat):
 
 
 def loadDataSet():
-    dataMat = [];
+    dataMat = []
     labelMat = []
     fr = open('testSet.txt')
     for line in fr.readlines():
