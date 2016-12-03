@@ -1,22 +1,34 @@
 800000行原始数据交叉验证测试后结果如下：
 
+
 Naive Bayes
-Precision Rate:  0.983959887695
-Recall Rate:     0.245989971924
-F1-Measure:      0.393583955078
+Precision Rate:  0.975548260514
+Recall Rate:     0.879317175746
+F1-Measure:      0.9249349686
+所用时间：319.462406877 秒
 
 Logistic_regression
-Precision Rate:  0.96983450977
-Recall Rate:     0.918404131832
-F1-Measure:      0.943406944309
-所用时间：227.677124 秒
+Precision Rate:  0.971687823506
+Recall Rate:     0.92964720332
+F1-Measure:      0.950200832078
+所用时间：333.452930094 秒
 
 Perception
-Precision Rate:   0.988402666016
-Recall Rate:      0.247100666504
-F1-Measure:       0.395361066406
+Precision Rate:  0.897531916018
+Recall Rate:     0.931224659634
+F1-Measure:      0.913975713255
+所用时间：307.176726539 秒
 
 SVM
-Precision Rate:  0.926815834961
-Recall Rate:     0.23170395874
-F1-Measure:      0.370726333984
+Precision Rate:  0.977791443622
+Recall Rate:     0.960514405897
+F1-Measure:      0.969074873784
+所用时间：282.190162113
+
+
+网格调参的结果：
+Perceptron:
+Precision Rate:  0.898018758252
+Recall Rate:     0.926957359998
+F1-Measure:      0.912241113615
+SpamMassage Rate: 0.102474

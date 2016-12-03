@@ -2,4 +2,4 @@ SVM:
 {'kernel': 'linear', 'C': 1.5}
 
 Perceptron:
-{'penalty': 'l2', 'n_iter': 10, 'eta0': 0.1}
+{'penalty': 'l2', 'n_iter': 5, 'eta0': 0.05}

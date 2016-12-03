@@ -77,6 +77,7 @@ for it in range(corssvalid_k):
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
+    print X_train_tfidf.shape
 
     # 实例一个SVM分类器
     # TODO 自己实现

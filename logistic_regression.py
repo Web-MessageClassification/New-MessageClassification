@@ -5,9 +5,7 @@ import numpy as np
 import jieba
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-# import the LogisticRegression
 from sklearn.linear_model import LogisticRegression
-from sklearn.externals import joblib
 from time import clock
 import var
 
@@ -89,11 +87,11 @@ F1 = [1] * corssvalid_k
 
 for it in range(corssvalid_k):
     # 生成交叉验证的训练集和测试集
-    datamat, labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
+    cut_datamat, cut_labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
 
     # 计算每个词的出现频率tf
     count_vect = CountVectorizer()
-    X_train_counts = count_vect.fit_transform(datamat)
+    X_train_counts = count_vect.fit_transform(cut_datamat)
 
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
@@ -103,7 +101,7 @@ for it in range(corssvalid_k):
 
     # 实现Logistic Regression 分类器
     clf = LogisticRegression()
-    clf.fit(X_train_tfidf, labelmat)
+    clf.fit(X_train_tfidf, cut_labelmat)
 
     # 计算新数据tfidf
     X_new_counts = count_vect.transform(validdatamat)

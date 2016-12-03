@@ -2,11 +2,12 @@
 # Create by FinsKap(Xiongziyi)
 
 
-import jieba
-import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
+from time import clock
+import numpy as np
+import jieba
 import var
 
 def loadtrain(file_name, maxline=10):
@@ -47,6 +48,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
             label.append(labelmat[i])
     return data, label, validdata, validlabel
 
+start = clock()
 # 载入训练集
 labelmat, datamat = loadtrain(var.train_data_path, maxline=800000)
 
@@ -67,11 +69,11 @@ F1 = [1] * corssvalid_k
 
 for it in range(corssvalid_k):
     # 生成交叉验证的训练集和测试集
-    datamat, labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
+    cut_datamat, cut_labelmat, validdatamat, validlabelmat = makecrossvaliddata(datamat, labelmat, it, corssvalid_k)
 
     # 计算每个词的出现频率tf
     count_vect = CountVectorizer()
-    X_train_counts = count_vect.fit_transform(datamat)
+    X_train_counts = count_vect.fit_transform(cut_datamat)
 
     # 计算tf-idf矩阵
     tfidf_transformer = TfidfTransformer()
@@ -79,24 +81,43 @@ for it in range(corssvalid_k):
 
     # 实现Naive Bayes分类器
     clf = MultinomialNB()
-    clf.fit(X_train_tfidf, labelmat)
+    clf.fit(X_train_tfidf, cut_labelmat)
 
     # 计算新数据tfidf
     X_new_counts = count_vect.transform(validdatamat)
     X_new_tfidf = tfidf_transformer.transform(X_new_counts)
+    print 'The column of tfidf matrix:', X_train_tfidf.shape
 
     # 判别新数据
     predicted = clf.predict(X_new_tfidf)
 
-    # for i in range(len(predicted)):
-    #     print('%d\t%s' % (predicted[i], validdatamat[i]))
+    # 计算正确率, 召回率和F1-Measure
+    pre_accurate = 0.0
+    recall_accurate = 0.0
+    sum_acc = 0.0
+    sum_re = 0.0
+    for i in range(len(predicted)):
+        tmp_predit = int(predicted[i])
+        tmp_valid = int(validlabelmat[i])
+        # print('%d\t%s' % (predicted[i], validdatamat[i]))
+        if tmp_predit == 1 and tmp_predit == tmp_valid:
+            pre_accurate += 1
+        if tmp_valid == 1 and tmp_valid == tmp_predit:
+            recall_accurate += 1
 
+        if tmp_predit == 1:
+            sum_acc += 1
+        if tmp_valid == 1:
+            sum_re += 1
     # 计算正确率
-    corssvalid_q[it] = np.mean(predicted == validlabelmat)
-    corssvalid_recall[it] = 1.0 * len(validlabelmat) / len(labelmat) * np.mean(predicted == validlabelmat)
+    corssvalid_q[it] = pre_accurate / sum_acc
+    # 计算召回率
+    corssvalid_recall[it] = recall_accurate / sum_re
+    # 计算F1-Measure
     F1[it] = 2.0 * corssvalid_q[it] * corssvalid_recall[it] / (corssvalid_q[it] + corssvalid_recall[it])
 
-
-print 'Precision Rate: ',np.mean(corssvalid_q)
-print 'Recall Rate:    ',np.mean(corssvalid_recall)
-print 'F1-Measure:     ',np.mean(F1)
+print 'Precision Rate: ', np.mean(corssvalid_q)
+print 'Recall Rate:    ', np.mean(corssvalid_recall)
+print 'F1-Measure:     ', np.mean(F1)
+finish = clock()
+print '所用时间：' + str(finish - start)
