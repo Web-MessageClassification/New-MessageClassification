@@ -95,7 +95,7 @@ for it in range(corssvalid_k):
     # 实例一个perceptron分类器
     # TODO 自己实现
     from sklearn.linear_model import Perceptron
-    clf = Perceptron(penalty='l2', n_iter=5, eta0=1, random_state=0)
+    clf = Perceptron(penalty='l2', n_iter=5, eta0=0.05, random_state=0)
     clf.fit(X_train_tfidf, labelmat)
     time_4 = time.time()
     corssvalid_time_train[it] = time_4 - time_3
@@ -179,3 +179,5 @@ print 'Average time of test:', np.mean(corssvalid_time_test)
 #Recall Rate:      0.237549224854
 #F1-Measure:       0.380078759766
 #SpamMassage Rate: 0.078912
+
+#网格搜索得到的最优参数为{'penalty': 'l2', 'n_iter': 5, 'eta0': 0.05}
