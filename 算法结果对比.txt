@@ -20,3 +20,10 @@ SVM
 Precision Rate:  0.926815834961
 Recall Rate:     0.23170395874
 F1-Measure:      0.370726333984
+
+网格调参的结果：
+Perceptron:
+Precision Rate:  0.898018758252
+Recall Rate:     0.926957359998
+F1-Measure:      0.912241113615
+SpamMassage Rate: 0.102474
