@@ -3,7 +3,7 @@
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
-#from time import clock
+from time import clock
 import numpy as np
 import jieba
 import time
@@ -47,7 +47,7 @@ def makecrossvaliddata(datamat, labelmat, it, k):
             label.append(labelmat[i])
     return data, label, validdata, validlabel
 
-#start = clock()
+start = clock()
 #统计数据的行数
 trainData_count = len(open(var.train_data_path,'rU').readlines())
 testData_count = len(open(var.test_data_path,'rU').readlines())
@@ -117,7 +117,7 @@ for it in range(corssvalid_k):
     #判别测试数据的标签
     predicted_test = clf.predict(X_test_tfidf)
     time_6 = time.time()
-    corssvalid_time_test[it] = time_4 - time_3
+    corssvalid_time_test[it] = time_6 - time_5
     print 'Test cost ', time_6 - time_5, ' second', '\n'
 
     #计算test数据的垃圾短信率
@@ -157,30 +157,9 @@ print 'F1-Measure:     ', np.mean(F1)
 print 'SpamMassage Rate:', np.mean(spamMassage_rate)
 print 'Average time of train:', np.mean(corssvalid_time_train)
 print 'Average time of test:', np.mean(corssvalid_time_test)
-#finish = clock()
-#print '所用时间：'+str(finish - start)
-
-#超参数：n_iter=40, eta0=0.01, random_state=0.
-#trainData count:  800000
-#trainData count:  800000
-#testData count:   200000
-#Precision Rate:   0.988402666016
-#Recall Rate:      0.247100666504
-#F1-Measure:       0.395361066406
-#SpamMassage Rate: 0.099029
-
-#超参数： penalty='None', n_iter=5, eta0=1, random_state=0.
-#trainData count:  800000
-#testData count:   200000
-#Precision Rate:   0.989921591797
-#Recall Rate:      0.247480397949
-#F1-Measure:       0.395968636719
-#SpamMassage Rate: 0.098979
-
-#超参数：penalty='l1', n_iter=5, eta0=1, random_state=0
-#Precision Rate:   0.950196899414
-#Recall Rate:      0.237549224854
-#F1-Measure:       0.380078759766
-#SpamMassage Rate: 0.078912
+finish = clock()
+print '所用时间：'+str(finish - start)
 
 #网格搜索得到的最优参数为{'penalty': 'l2', 'n_iter': 5, 'eta0': 0.05}
+#Average time of train: 1.33980002403
+#Average time of test: 0.0170000076294
